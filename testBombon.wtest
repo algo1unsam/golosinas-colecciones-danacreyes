@@ -1,1 +1,203 @@
+import golosinas.*
 
+describe ".+* Parte 1 *+." {
+    test "bombon"{
+        assert.equals( 5 , bombon.precio())
+        assert.equals( 15 , bombon.peso())
+        assert.equals(frutilla, bombon.sabor())
+        assert.equals( false , bombon.gluten())
+
+        bombon.mordisco()
+        assert.equals( 11 , bombon.mordisco())
+    }
+    test "alfajor"{
+        assert.equals( 12 , alfajor.precio())
+        assert.equals( 300 , alfajor.peso())
+        assert.equals( chocolate , alfajor.sabor())
+        assert.equals( true , alfajor.gluten())
+
+        alfajor.mordisco()
+        assert.equals( 240 , alfajor.mordisco())
+    }
+    test "caramelo"{
+        assert.equals( 1 , caramelo.precio())
+        assert.equals( 5 , caramelo.peso())
+        assert.equals( frutilla , caramelo.sabor())
+        assert.equals( false , caramelo.gluten())
+
+        caramelo.mordisco()
+        assert.equals( 4 , caramelo.mordisco())
+    }
+    test "chupetin"{
+        assert.equals( 2 , chupetin.precio())
+        assert.equals( 7 , chupetin.peso())
+        assert.equals( naranja , chupetin.sabor())
+        assert.equals( false , chupetin.gluten())
+
+        chupetin.mordisco()
+        assert.equals( 6.3 , chupetin.mordisco())
+    }
+    test "oblea" {
+        assert.equals(5, oblea.precio())
+        assert.equals(250, oblea.peso())
+        assert.equals( vainilla , oblea.sabor())
+        assert.equals(true, oblea.gluten())
+
+        oblea.mordisco()
+        assert.equals(125, oblea.mordisco()) // 250 * 0.5 = 125
+    }
+    test "chocolatin" {
+        chocolatin.peso(100) // Asignamos un peso inicial de 100 gramos
+        assert.equals(50, chocolatin.precioActual()) // 0.5 * 100 = 50
+        assert.equals(100, chocolatin.pesoActual())
+        assert.equals(chocolate, chocolatin.sabor())
+        assert.equals(true, chocolatin.gluten())
+
+        chocolatin.mordisco()
+        assert.equals(98, chocolatin.pesoActual()) // 100 - 2 = 98
+        assert.equals(50, chocolatin.precioActual())
+    }
+    test "golosinaBaniada"{
+        golosinaBaniada.golosinaBase(bombon)
+        assert.equals( 7 , golosinaBaniada.precio())
+        assert.equals( 19 , golosinaBaniada.peso())
+        assert.equals( frutilla , golosinaBaniada.sabor())
+        assert.equals( false , golosinaBaniada.gluten())
+        assert.equals( 4 , golosinaBaniada.banioChocolate())
+
+        golosinaBaniada.mordisco() 
+        assert.equals(2, golosinaBaniada.banioChocolate()) 
+        golosinaBaniada.mordisco()
+        assert.equals(0, golosinaBaniada.banioChocolate()) 
+    }
+
+    test "tutti"{
+        assert.equals(5, tutti.peso())
+        tutti.gluten(false)
+        assert.equals(false, tutti.gluten())
+        tutti.precio()
+        assert.equals(10, tutti.precio())
+        tutti.mordisco()
+        assert.equals(frutilla, tutti.sabor())
+    }
+}
+describe ".+* Parte 2 *+." {
+  test "comprar" {
+        mariano.comprar(bombon)
+        assert.equals([bombon], mariano.bolsa())
+        mariano.comprar(alfajor)
+        assert.equals([bombon,alfajor], mariano.bolsa())
+        mariano.comprar(chupetin)
+        assert.equals([bombon,alfajor,chupetin], mariano.bolsa())
+  }
+  test "desechar" {
+        mariano.comprar(bombon)
+        assert.equals([bombon], mariano.bolsa())
+        mariano.comprar(alfajor)
+        assert.equals([bombon,alfajor], mariano.bolsa())
+        mariano.comprar(chupetin)
+        assert.equals([bombon,alfajor,chupetin], mariano.bolsa())
+
+        mariano.desechar(bombon)
+        assert.equals([alfajor,chupetin], mariano.bolsa())
+  }
+  test "probarGolosina" {
+        mariano.comprar(bombon)
+        assert.equals([bombon], mariano.bolsa())
+        mariano.comprar(alfajor)
+        assert.equals([bombon,alfajor], mariano.bolsa())
+        mariano.comprar(chupetin)
+        assert.equals([bombon,alfajor,chupetin], mariano.bolsa())
+
+        mariano.hayGolosinaSinTACC()
+        assert.equals(true, mariano.hayGolosinaSinTACC())
+  }
+  test "preciosCiudados" {
+        mariano.comprar(bombon)
+        assert.equals([bombon], mariano.bolsa())
+        mariano.comprar(alfajor)
+        assert.equals([bombon,alfajor], mariano.bolsa())
+        mariano.comprar(chupetin)
+        assert.equals([bombon,alfajor,chupetin], mariano.bolsa())
+
+        mariano.preciosCuidados()
+        assert.equals(false, mariano.preciosCuidados())
+  }
+  test "golsina de un sabor" {
+        mariano.comprar(bombon)
+        assert.equals([bombon], mariano.bolsa())
+        mariano.comprar(alfajor)
+        assert.equals([bombon,alfajor], mariano.bolsa())
+        mariano.comprar(caramelo)
+        assert.equals([bombon,alfajor,caramelo], mariano.bolsa())
+
+        mariano.golosinaDeSabor(frutilla)
+        assert.equals(bombon, mariano.golosinaDeSabor(frutilla))
+  }
+  test "golsinas de un sabor" {
+        mariano.comprar(bombon)
+        assert.equals([bombon], mariano.bolsa())
+        mariano.comprar(alfajor)
+        assert.equals([bombon,alfajor], mariano.bolsa())
+        mariano.comprar(caramelo)
+        assert.equals([bombon,alfajor,caramelo], mariano.bolsa())
+
+        mariano.golosinasDeSabor(frutilla)
+        assert.equals([bombon,caramelo], mariano.golosinasDeSabor(frutilla))
+  }
+  test "sabores" {
+        mariano.comprar(bombon)
+        assert.equals([bombon], mariano.bolsa())
+        mariano.comprar(alfajor)
+        assert.equals([bombon,alfajor], mariano.bolsa())
+        mariano.comprar(caramelo)
+        assert.equals([bombon,alfajor,caramelo], mariano.bolsa())
+
+        mariano.sabores()
+        assert.equals({frutilla,chocolate}, mariano.sabores()) // funciona
+  }
+  test "más cara" {
+        mariano.comprar(bombon)
+        assert.equals([bombon], mariano.bolsa())
+        mariano.comprar(alfajor)
+        assert.equals([bombon,alfajor], mariano.bolsa())
+        mariano.comprar(caramelo)
+        assert.equals([bombon,alfajor,caramelo], mariano.bolsa())
+
+        mariano.golosinaMasCara()
+        assert.equals(alfajor, mariano.golosinaMasCara())
+  }
+  test "pesos" {
+        mariano.comprar(bombon)
+        assert.equals([bombon], mariano.bolsa())
+        mariano.comprar(alfajor)
+        assert.equals([bombon,alfajor], mariano.bolsa())
+        mariano.comprar(caramelo)
+        assert.equals([bombon,alfajor,caramelo], mariano.bolsa())
+
+        mariano.pesoGolosina()
+        assert.equals(320, mariano.pesoGolosina())
+  }
+  test "golosinas faltantes" {
+        mariano.comprar(bombon)
+        assert.equals([bombon], mariano.bolsa())
+        mariano.comprar(alfajor)
+        assert.equals([bombon,alfajor], mariano.bolsa())
+        mariano.comprar(caramelo)
+        assert.equals([bombon,alfajor,caramelo], mariano.bolsa())
+
+        mariano.golosinasFaltantes([bombon, oblea])
+        assert.equals(oblea, mariano.golosinasFaltantes([bombon, oblea]))
+  }
+  test "gustos faltantes" {
+        mariano.comprar(bombon)
+        assert.equals([bombon], mariano.bolsa())
+        mariano.comprar(alfajor)
+        assert.equals([bombon,alfajor], mariano.bolsa())
+        mariano.comprar(caramelo)
+        assert.equals([bombon,alfajor,caramelo], mariano.bolsa())
+
+        mariano.gustosFaltantes([naranja, chocolate])
+        assert.equals(naranja, mariano.golosinasFaltantes([naranja, chocolate]))
+  }
+}

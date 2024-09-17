@@ -1,78 +1,78 @@
-object bombon {
-    var property precio = 5
-    var property peso = 15
-    var property sabor = frutilla
-    var property gluten = false
-    var property mordisco = 0 
+class Golosina {
+    var property peso
+    var property precio
+    var property sabor  
 
-    method mordisco() {
+    method gluten() = false
+    method mordisco(){}
+
+    method peso() = peso
+    method precio() = precio
+    method sabor() = sabor
+}
+
+// para cambiar algo de la clase : override, pisa lo que estaba escrito
+// object bombon inherits Golosina...
+// 
+object bombon inherits Golosina(peso = 15, precio = 5, sabor = frutilla){
+    var property mordisco = 0 
+    override method gluten() = false
+
+    override method mordisco() {
         mordisco = peso * 0.8 - 1
         return mordisco
     }
 }
-object alfajor {
-    var property precio = 12
-    var property peso = 300
-    var property sabor = chocolate
-    var property gluten = true
+object alfajor inherits Golosina(peso = 300, precio = 12, sabor = chocolate){
+    override method gluten()= true
     var property mordisco = 0 
 
-    method mordisco() {
+    override method mordisco() {
         mordisco = peso * 0.8
         return mordisco
     }
 }
-object caramelo {
-    var property precio = 1
-    var property peso = 5
-    var property sabor = frutilla
-    var property gluten = false
+object caramelo inherits Golosina(peso = 5, precio = 1, sabor = frutilla){
+    override method gluten() = false
     var property mordisco = 0 
 
-    method mordisco() {
+    override method mordisco() {
         mordisco = peso - 1 
         return mordisco
     }
 }
-object chupetin {
-    var property precio = 2
-    var property peso = 7
-    var property sabor = naranja
-    var property gluten = false
+object chupetin inherits Golosina(peso = 7, precio = 2, sabor = naranja){
+    override method gluten() = false
     var property mordisco = 0 
 
-    method mordisco() {
+    override method mordisco() {
         if (peso > 2){mordisco = peso * 0.9 }
         return mordisco
     }
 }
-object oblea {
-    var property precio = 5
-    var property peso = 250
-    var property sabor = vainilla
-    var property gluten = true
+object oblea inherits Golosina(peso = 250, precio = 5, sabor = vainilla){
+    override method gluten()= true
     var property mordisco = 0 
 
-    method mordisco() {
+    override method mordisco() {
         if (peso > 70){mordisco = peso * 0.5 }
         else {mordisco = peso * 0.25 }
         return mordisco
     }
 }
-object chocolatin {
-    var property pesoInicial = 0
+object chocolatin inherits Golosina(peso = 0, precio = 0, sabor = chocolate) {
+    var property pesoInicial = peso
     var property pesoActual = 0
-    var property precioInicial = 0
-    var property sabor = chocolate
-    var property gluten = true
+    var property precioInicial = precio
+    override method gluten() = true
     var property mordisco = 0 
 
-    method peso(_peso) {
+    override method peso(_peso) {
         pesoInicial = _peso 
         pesoActual = _peso
         precioInicial = 0.5 * pesoInicial // El precio se calcula según el peso inicial
     }
-    method mordisco() {
+    override method mordisco() {
         pesoActual = pesoActual - 2
         return pesoActual
     }
@@ -80,7 +80,7 @@ object chocolatin {
         return precioInicial
     }
 }
-object golosinaBaniada {
+class GolosinaBaniada inherits Golosina{
     var property golosinaBase = null
     var property banioChocolate = 4
     var property mordisco = 0 
@@ -89,35 +89,38 @@ object golosinaBaniada {
       golosinaBase = golosina
     }
 
-    method precio() = golosinaBase.precio() + 2
-    method peso() = golosinaBase.peso() + banioChocolate
-    method sabor() = golosinaBase.sabor()
-    method gluten() = golosinaBase.gluten()
-    method mordisco() {
+    override method precio() = golosinaBase.precio() + 2
+    override method peso() = golosinaBase.peso() + banioChocolate
+    override method sabor() = golosinaBase.sabor()
+    override method gluten() = golosinaBase.gluten()
+    override method mordisco() {
         golosinaBase.mordisco()
         if (banioChocolate > 0) {banioChocolate = banioChocolate - 2}
         return banioChocolate
     }
+    method baniar(unaGolsina) = unaGolsina.peso() + banioChocolate
+    method esBaniada() = true
 }
-object tutti{
-    var property precioInicial = 0
+object tutti inherits Golosina(peso = 5, precio = 0, sabor = naranja){
+    var property precioInicial = precio
     var property precioActual = 0
-    var property peso = 5
-    var property sabor = naranja   
     var property gluten = false
 
+    //var property peso = 5
+    //override method gluten() = false
+
     method gluten(_gluten) {
-      gluten = _gluten
-      return gluten
+        gluten = _gluten
+        return gluten
     }
-    method precio() {
-      if (gluten){precioInicial = 7}
-      else {precioInicial = 10}
-      precioActual = precioInicial
-      return precioActual
+    override method precio() {
+        if (gluten){precioInicial = 7}
+        else {precioInicial = 10}
+        precioActual = precioInicial
+        return precioActual
     }
 
-    method mordisco(){
+    override method mordisco(){
         sabor = sabor.siguiente()
     }
 }
@@ -139,7 +142,7 @@ object vainilla {
 // === es más estricto que ==
 // .asSet(): no repite / .asList() 
 
-object mariano{
+class Mariano{
     var property bolsa = []
 
     method comprar(golosina) = bolsa.add(golosina)
@@ -165,4 +168,5 @@ object mariano{
     method golosinasFaltantes(golosinasDeseadas) = golosinasDeseadas.find{golosina => !bolsa.contains(golosina)}
     
     method gustosFaltantes(gustosDeseados) = gustosDeseados.filter{ gusto => !bolsa.contains { golosina => golosina.sabor() == gusto } }
+
 }
